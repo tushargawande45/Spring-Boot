@@ -1,0 +1,32 @@
+package com.api.book.services;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.api.book.entities.Book;
+
+@Service
+public class BookService {
+
+	private static List<Book> list = new ArrayList<>();
+	static{
+	list.add(new Book(4321,"Java Complete Reference","XYZ"));
+	list.add(new Book(12,"Head First To Java","ABC"));
+	list.add(new Book(12963,"Thing in Java","LMN"));
+	}
+	
+	//getAllBooks
+	public List<Book> getAllBooks(){
+		return list;	
+	}
+	
+	//getSingleBookById
+	public Book getSingleBook(int id) {
+		Book book = null;
+		book = list.stream().filter(e->e.getId()==id).findFirst().get();
+		return book;
+		
+	}
+}
