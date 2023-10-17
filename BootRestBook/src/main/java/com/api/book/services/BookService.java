@@ -2,6 +2,8 @@ package com.api.book.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -28,5 +30,29 @@ public class BookService {
 		book = list.stream().filter(e->e.getId()==id).findFirst().get();
 		return book;
 		
+	}
+	
+	//addBook
+	public Book addBook(Book b) {
+	list.add(b);
+	return b;
+	}
+	
+	//DeleteBookById
+	public void deleteBook(int bid) {
+		list = list.stream().filter(book->book.getId()!=bid)
+				.collect(Collectors.toList());
+		
+	}
+	
+	//updateBook
+	public void updateBook(Book book, int bookId) {
+		list = list.stream().map(b->{
+			if(b.getId()==bookId){
+				b.setAuthor(book.getAuthor());
+				b.setTitle(book.getTitle());
+			}
+			return b;
+		}).collect(Collectors.toList());
 	}
 }
