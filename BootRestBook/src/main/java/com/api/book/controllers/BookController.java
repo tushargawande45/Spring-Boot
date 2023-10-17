@@ -2,8 +2,13 @@ package com.api.book.controllers;
 
 
 import java.util.List;
+import java.util.Optional;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,15 +29,22 @@ public class BookController {
 	
 	//Get All Book Handler
 	@GetMapping("/books")
-	public List<Book> getBooks() {
-		return this.bookService.getAllBooks();
+	public ResponseEntity<List<Book>> getBooks() {
+		List<Book> list = bookService.getAllBooks();
+		if(list.size()<=0) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+		return ResponseEntity.of(Optional.of(list));
 	}
 	
 	//Get single Book Handler
 	@GetMapping("/books/{id}")
-	public Book getBookById(@PathVariable("id") int id) {
-		return this.bookService.getSingleBook(id);
-		
+	public ResponseEntity<Book> getBookById(@PathVariable("id") int id) {
+		Book book = bookService.getBookById(id);
+		if(book==null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+		return ResponseEntity.of(Optional.of(book));
 	}
 	
 	//Create Book Handler
